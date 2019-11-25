@@ -4,6 +4,9 @@ var _ = require('lodash');
 var axios = require('axios');
 
 /*e4877e33*/
+
+
+/* Doc API https://documenter.getpostman.com/view/9595426/SW7dWSLU */
 //Tableau
 var movies = [];
 
@@ -56,4 +59,33 @@ router.put('/', (req, res) => {
 
 
 
+/* UPDATE a movie */
+router.post('/:id', (req, res) => {
+	// Prend l'id du film qu'on veut update
+	const { id } = req.params;
+	//Prend la nouvelle donée à mettre à jour
+	const { movie } = req.body;
+	// Find in DB
+	const movieToUpdate = _.find(movies, ["id", id]);
+	// Mise a jour de la donnée avce la nouvelle donnée
+	movieToUpdate.movie = movie;
+	// Message
+	res.status(200).json({
+		message: `Mise a jour ${id}`,
+	});
+});
 
+
+
+/* DELETE movie par id */
+router.delete('/:id', (req, res) => {
+	// On prend l'id du film qu'on veut supprimer
+	const { id } = req.params;
+	// Suppresion dans la BD
+	_.remove(movies, ["id", id]);
+	// Message
+	res.status(200).json({
+		message: `Suppression de ${id}`
+	});
+});
+module.exports = router;
